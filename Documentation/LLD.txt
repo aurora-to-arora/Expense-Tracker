@@ -1,0 +1,75 @@
+Data Model:
+
+Expense {
+  id: string (UUID)
+  amount: number (e.g., 99.99)
+  category: string
+  description: string
+  date: string (YYYY-MM-DD)
+  created_at: string (timestamp)
+}
+
+Backend APIs:
+
+
+POST	/expenses	{ amount, category, description, date }	201 Created, expense object
+GET	/expenses	Optional: ?sort=date_desc	200 OK, list of expenses
+
+Idempotency:
+
+POST requests include Idempotency-Key to prevent duplicates when user retries.
+
+Frontend Component-
+The frontend of the Expense Tracker consists of several key components. 
+The ExpenseForm manages controlled inputs for amount, category, description, and date, and submitting the form triggers 
+a POST request to the backend. The FilterControls component allows users to filter expenses by category using an input field 
+and to sort them by newest using a checkbox. The ExpenseTable renders the rows of expenses based on the 
+filtered and sorted data, while the TotalDisplay computes and shows the sum of the currently visible expenses. 
+Finally, the Error/Loading UI handles feedback for the user by displaying error messages or a loading indicator 
+when API requests are in progress.
+
+Frontend Logic Flow:
+
+On load: useEffect() calls fetchExpenses() → stores in expenses state.
+
+Filter & sort:
+
+filteredExpenses = expenses.filter(...)
+
+displayedExpenses = filteredExpenses.sort(...)
+
+Add Expense:
+
+Validate inputs → check future date
+
+Send POST request with idempotency key
+
+Refresh expenses list after success
+
+ UI-Backend Interaction Sequence:
+ User fills form
+      |
+      v
+Frontend validates input
+      |
+      v
+POST /expenses  ---> Backend creates expense
+      |
+      v
+Frontend fetches /expenses
+      |
+      v
+State updated: expenses
+      |
+      v
+Filtered + Sorted → Render Table + Total
+
+6. Key Design Decisions / Trade-offs:
+
+Filtering and sorting done on frontend to avoid case-sensitivity issues and backend dependency.
+
+Simple persistence (SQLite / JSON) instead of full DB for ease of setup.
+
+Minimal validation for MVP; production-ready version could add user auth, recurring expenses, etc.
+
+Frontend uses controlled components to simplify state management.

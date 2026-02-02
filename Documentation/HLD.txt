@@ -1,0 +1,49 @@
+1. Overview:
+The Expense Tracker is a full-stack web application that allows users to record and review personal expenses. Users can add expenses with amount, category, description, and date, and filter or sort them to analyze spending patterns.
+
+2. Architecture:
+
+Frontend: React (Vite)
+
+Backend: REST API (FastAPI / Express / any backend)
+
+Persistence: SQLite / JSON / any lightweight DB
+
+Communication: Frontend calls backend API via HTTP (JSON)
+
++------------+       HTTP/JSON       +-------------+       Persistence
+| Frontend   | <----------------->   | Backend API | <-----------------+
+| React/Vite |                       | FastAPI     |                   |
++------------+                       +-------------+                   |
+                                                                     SQLite/JSON
+3. Components:
+
+Component	
+Expense Form- Add new expenses (amount, category, description, date)
+Expense Table- Display list of expenses with sorting and filtering
+Filter & Sort Controls- Filter by category, sort by newest
+Total Display- Show total of visible expenses
+API Layer- Handles GET and POST requests to backend
+Error/Loading State	Display errors and loading indicators
+
+4. User Stories Covered:
+
+Create expense entries
+
+View all expenses
+
+Filter by category (case-insensitive ideal)
+
+Sort by newest
+
+Show total of filtered/visible expenses
+
+5. Non-functional Considerations:
+
+Idempotency for POST requests to handle retries
+
+Validation: required fields, no future dates, no negative amounts (optional)
+
+Resilient to network issues (loading, error handling)
+
+Simple UI for clarity and usability
